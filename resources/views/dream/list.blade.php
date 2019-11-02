@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Мои мечты</div>
-                    @foreach ($dreams as $dream)
+                    @forelse ($dreams as $dream)
                         @if ($loop->first)
                             <ul>
                         @endif
@@ -14,7 +14,9 @@
                         @if ($loop->last)
                             </ul>
                         @endif
-                    @endforeach
+                    @empty
+                        Для начала работы Вам необходимо <a href = "{{ route('new_dream') }}">создать</a> свою первую мечту.
+                    @endforelse
                 </div>
             </div>
         </div>
