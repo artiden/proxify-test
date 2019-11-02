@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('/', function(){
+    return view('welcome');
+});
+
 Auth::routes();
 
 //Only authorized users can access here
