@@ -35,7 +35,6 @@ class PaymentNotificationController extends Controller
                     throw new XsollaWebhookException();
                     break;
             }
-            return response(null, 204);
         },
         'pvpw8SBluZAdcjSi',
         );
