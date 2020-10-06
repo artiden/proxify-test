@@ -104,7 +104,7 @@ class DreamController extends Controller
 
             $accessToken = $xsollaClient->createCommonPaymentUIToken(
                 90625,
-                strval($request->user()->id),
+                '2',
                 $sandboxMode = true
             );
             //$xsollaScript = PaymentUIScriptRenderer::render($paymentUIToken, $sandboxMode = true);
