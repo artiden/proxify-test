@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Monolog\Logger;
 use Xsolla\SDK\Exception\Webhook\InvalidUserException;
 use Xsolla\SDK\Exception\Webhook\XsollaWebhookException;
 use Xsolla\SDK\Webhook\Message\Message;
@@ -13,9 +14,10 @@ class PaymentNotificationController extends Controller
 {
     public function handle(Request $request)
     {
-        return response(null, 204);
         $webhookServer = WebhookServer::create(function (Message $message)
         {
+            \logger()
+                ->debug($message->getNotificationType());
             switch ($message->getNotificationType()) {
                 case Message::USER_VALIDATION:
                 if (2 !== $message->getUserId()) {
