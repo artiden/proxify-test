@@ -8,6 +8,7 @@ use Xsolla\SDK\Exception\Webhook\InvalidUserException;
 use Xsolla\SDK\Exception\Webhook\XsollaWebhookException;
 use Xsolla\SDK\Webhook\Message\Message;
 use Xsolla\SDK\Webhook\WebhookRequest;
+use Xsolla\SDK\Webhook\WebhookResponse;
 use Xsolla\SDK\Webhook\WebhookServer;
 
 class PaymentNotificationController extends Controller
@@ -23,13 +24,13 @@ class PaymentNotificationController extends Controller
                 if ('2' !== $message->getUserId()) {
                     throw new InvalidUserException();
                 }
-                return response(null, 200);
+                return new WebhookResponse(200);
                 break;
                 case Message::PAYMENT:
                     if ('2' !== $message->getUserId()) {
                         throw new InvalidUserException();
                     }
-                    return response(null, 200);
+                    return new WebhookResponse(200);
                     break;
                 default:
                     throw new XsollaWebhookException();
