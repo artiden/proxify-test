@@ -31,7 +31,7 @@ class PaymentNotificationController extends Controller
             }
             return response(null, 204);
         },
-        '90625',
+        'pvpw8SBluZAdcjSi',
         );
         $webhookServer->start(null, false);
     }
