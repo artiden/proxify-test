@@ -26,4 +26,7 @@ Route::middleware(['auth'])->group(function(){
 
 //All users can view and pay...
 Route::get('/dream/{dream}', 'DreamController@show')->name('show_dream');
+Route::get('/dream/pt/{dream}', 'DreamController@testPay')->name('pt');
 Route::match(['get', 'post'], '/dream/pay/{dream}', 'DreamController@pay')->name('pay_dream');
+
+Route::post('/paynotify', 'PaymentNotificationController@handle')->name('pay_notify');

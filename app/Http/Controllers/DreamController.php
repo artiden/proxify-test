@@ -9,12 +9,14 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreDream;
 use App\Dream;
 use App\User;
+use Xsolla\SDK\API\PaymentUI\PaymentUIScriptRenderer;
+use Xsolla\SDK\API\XsollaClient;
 
 class DreamController extends Controller
 {
     /**
      * A dreams repository
-     * 
+     *
      * @var DreamRepository
      */
     private $repository;
@@ -46,7 +48,7 @@ class DreamController extends Controller
 
     /**
      * Show form to create a new your dream
-     * 
+     *
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function storeForm()
@@ -56,7 +58,7 @@ class DreamController extends Controller
 
     /**
      * Store your dream to the database
-     * 
+     *
      * @param StoreDream $request
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -69,7 +71,7 @@ class DreamController extends Controller
 
     /**
      * Show selected dream
-     * 
+     *
      * @param Dream $dream
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
@@ -80,7 +82,7 @@ class DreamController extends Controller
 
     /**
      * An action using for show a pay form or make fake payment. It's depends on a request method.
-     * 
+     *
      * @param Request $request
      * @param Dream $dream
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
@@ -95,10 +97,39 @@ class DreamController extends Controller
         $sum = 1;
 
         if (!$request->isMethod('POST')) {
-            return view('dream.pay', compact('dream', 'sum'));
+            $xsollaClient = XsollaClient::factory([
+                'merchant_id' => 165848,
+                'api_key' => '3cddac17a9ac2dace9bb9ebfe0093fbe',
+            ]);
+
+            $accessToken = $xsollaClient->createCommonPaymentUIToken(
+                90625,
+                strval($request->user()->id),
+                $sandboxMode = true
+            );
+            //$xsollaScript = PaymentUIScriptRenderer::render($paymentUIToken, $sandboxMode = true);
+
+            return view('dream.pay', compact('dream', 'sum', 'accessToken'));
         }
 
         $this->repository->pay($dream, $sum);
         return redirect()->route('show_dream', [$dream->id]);
+    }
+
+    public function testPay(Request $request, Dream $dream)
+    {
+        $xsollaClient = XsollaClient::factory([
+            'merchant_id' => 165848,
+            'api_key' => '3cddac17a9ac2dace9bb9ebfe0093fbe',
+        ]);
+
+        $paymentUIToken = $xsollaClient->createCommonPaymentUIToken(
+            90625,
+            strval($request->user()->id),
+            $sandboxMode = true
+        );
+        //PaymentUIScriptRenderer::send($paymentUIToken, $sandboxMode = true);
+        var_dump();
+        var_dump($paymentUIToken);
     }
 }
