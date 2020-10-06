@@ -20,7 +20,7 @@ class PaymentNotificationController extends Controller
                 ->debug($message->getNotificationType());
             switch ($message->getNotificationType()) {
                 case Message::USER_VALIDATION:
-                if (2 !== $message->getUserId()) {
+                if ('2' !== $message->getUserId()) {
                     throw new InvalidUserException();
                 }
                 return response(null, 200);
