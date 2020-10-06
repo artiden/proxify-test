@@ -10,6 +10,7 @@ use App\Http\Requests\StoreDream;
 use App\Dream;
 use App\User;
 use Xsolla\SDK\API\PaymentUI\PaymentUIScriptRenderer;
+use Xsolla\SDK\API\PaymentUI\TokenRequest;
 use Xsolla\SDK\API\XsollaClient;
 
 class DreamController extends Controller
@@ -101,15 +102,18 @@ class DreamController extends Controller
                 'merchant_id' => 165848,
                 'api_key' => '3cddac17a9ac2dace9bb9ebfe0093fbe',
             ]);
-
-            $accessToken = $xsollaClient->createCommonPaymentUIToken(
+            $tokenRequest = new TokenRequest(
                 90625,
-                '2',
-                $sandboxMode = true
+                '2'
             );
-            //$xsollaScript = PaymentUIScriptRenderer::render($paymentUIToken, $sandboxMode = true);
+            $tokenRequest
+                ->setCurrency('USD')
+                ->setPurchase(1.0, 'USD')
+                ->setSandboxMode(true);
+            $accessToken = $xsollaClient->createPaymentUITokenFromRequest($tokenRequest);
+            $xsollaScript = PaymentUIScriptRenderer::render($accessToken, $sandboxMode = true);
 
-            return view('dream.pay', compact('dream', 'sum', 'accessToken'));
+            return view('dream.pay', compact('dream', 'sum', 'xsollaScript'));
         }
 
         $this->repository->pay($dream, $sum);

@@ -8,11 +8,11 @@
                 <div class="card-header">Оплата</div>
                     Вы подтверждаете оплату ${{ $sum }} в пользу пользователя {{ $dream->user->name }} на осуществление его мечты {{ $dream->short_description }}?<br />
                     <button data-xpaystation-widget-open>Buy Credits</button>
-                    <a href = "https://sandbox-secure.xsolla.com/paystation3/?access_token={{ $accessToken }}">Pay</a>
                     @include('form.pay') или <a href = "{{ route('show_dream', [$dream->id]) }}">вернутся к просмотру мечты</a>.
                 </div>
             </div>
         </div>
     </div>
 </div>
+    {!! $xsollaScript !!}
 @endsection
