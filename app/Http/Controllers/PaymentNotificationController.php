@@ -24,13 +24,13 @@ class PaymentNotificationController extends Controller
                 if ('2' !== $message->getUserId()) {
                     throw new InvalidUserException();
                 }
-                return new WebhookResponse(200, 'OK');
+                return new WebhookResponse(200, '{}');
                 break;
                 case Message::PAYMENT:
                     if ('2' !== $message->getUserId()) {
                         throw new InvalidUserException();
                     }
-                    return new WebhookResponse(200, 'OK');
+                    return new WebhookResponse(200, '{}');
                     break;
                 default:
                     throw new XsollaWebhookException();
