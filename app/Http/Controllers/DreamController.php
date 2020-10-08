@@ -110,7 +110,7 @@ class DreamController extends Controller
                 ->setCurrency('USD')
                 ->setPurchase(1.0, 'USD')
                 ->setSandboxMode(true);
-            $accessToken = '6hnbJJ2ViieZtyar4mfQriR70FcNuIy4';//$xsollaClient->createPaymentUITokenFromRequest($tokenRequest);
+            $accessToken = $xsollaClient->createPaymentUITokenFromRequest($tokenRequest);
             $xsollaScript = PaymentUIScriptRenderer::render($accessToken, $sandboxMode = true);
 
             return view('dream.pay', compact('dream', 'sum', 'xsollaScript'));
